@@ -1,1 +1,2 @@
-print(7)
+p = 5
+print(p)
