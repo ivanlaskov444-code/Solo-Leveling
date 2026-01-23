@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="42">
+ <tileset firstgid="1" source="ground.tsx"/>
+ <tileset firstgid="5" source="border.tsx"/>
+ <tileset firstgid="9" source="portal.tsx"/>
+ <tileset firstgid="17" source="city.tsx"/>
+ <layer id="4" name="ground" width="80" height="80">
+  <data encoding="base64" compression="zlib">
+   eJzt0cEJwDAQwLBL2/1nbmbIRxjyMBrAa2ae3boe+e6+67H6X139r67+V1f/q6v/1dX/6up/dfW/uvpfXf2vrv5XV/+rq//V1f/q6n919b+6+l9d/a+u/ldX/6ur/9XV/+rqf3X1v7r6X139r67+V1f/q6v/1dX/6up/dfW/uvpfXf2vrv5XV/+rq//V1f/q6n919b+6+l9d/a+u/ldX/6ur/9XV/+rqf3X1v7r6X139r67+V1f/q6v/1dX/6up/dfW/uvpfXf2vrv5XV/+rq//V1f/q6n919b+6+l9d/a+u/ldX/6ur/9XV/+rqf3X1v7r6X139r67+V1f/q6v/1dX/6v7eOj6B
+  </data>
+ </layer>
+ <layer id="5" name="border" width="80" height="80">
+  <data encoding="base64" compression="zlib">
+   eJzt0MEJACAQwDDd/++8DtGHciTQBboWAAAAAD86e1Yv/k3hX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX+Nf41/jX/Pq36QAAAAA+NMFHIl4VQ==
+  </data>
+ </layer>
+ <layer id="6" name="portal" width="80" height="80">
+  <data encoding="base64" compression="zlib">
+   eJzt2zENgEAQRcGf7FqAFvx7gxZKKgzQ3JHMKHgGXgIAAAAAzOiq5K7RFf+1dbL36AoAAAAAAAAAAAAAAAAAAF5HJad/9rOlk9U/CwAAAADTegDT/gRR
+  </data>
+ </layer>
+ <objectgroup id="7" name="mobs1">
+  <object id="16" x="636.364" y="1587.88">
+   <point/>
+  </object>
+  <object id="17" x="951.515" y="1593.94">
+   <point/>
+  </object>
+  <object id="18" x="1284.85" y="1587.88">
+   <point/>
+  </object>
+  <object id="19" x="1596.97" y="1587.88">
+   <point/>
+  </object>
+  <object id="20" x="1912.12" y="1587.88">
+   <point/>
+  </object>
+  <object id="21" x="1918.18" y="1284.85">
+   <point/>
+  </object>
+  <object id="22" x="1593.94" y="1269.7">
+   <point/>
+  </object>
+  <object id="23" x="1275.76" y="1263.64">
+   <point/>
+  </object>
+  <object id="24" x="963.636" y="1263.64">
+   <point/>
+  </object>
+  <object id="25" x="642.424" y="1260.61">
+   <point/>
+  </object>
+  <object id="26" x="633.333" y="948.485">
+   <point/>
+  </object>
+  <object id="27" x="951.515" y="945.455">
+   <point/>
+  </object>
+  <object id="28" x="1281.82" y="942.424">
+   <point/>
+  </object>
+  <object id="29" x="1600" y="945.455">
+   <point/>
+  </object>
+  <object id="30" x="1906.06" y="948.485">
+   <point/>
+  </object>
+  <object id="31" x="1918.18" y="621.212">
+   <point/>
+  </object>
+  <object id="32" x="1593.94" y="612.121">
+   <point/>
+  </object>
+  <object id="33" x="1284.85" y="618.182">
+   <point/>
+  </object>
+  <object id="34" x="954.545" y="633.333">
+   <point/>
+  </object>
+  <object id="35" x="642.424" y="627.273">
+   <point/>
+  </object>
+  <object id="36" x="639.394" y="1769.7">
+   <point/>
+  </object>
+  <object id="37" x="951.515" y="1745.45">
+   <point/>
+  </object>
+  <object id="38" x="1281.82" y="1748.48">
+   <point/>
+  </object>
+  <object id="39" x="1606.06" y="1745.45">
+   <point/>
+  </object>
+  <object id="40" x="1915.15" y="1760.61">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
