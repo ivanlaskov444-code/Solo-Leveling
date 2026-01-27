@@ -5,7 +5,7 @@
  <tileset firstgid="1050" source="Exterior_house.tsx"/>
  <layer id="7" name="house border" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJzt1DmOwkAUBNA+NMtlBjgIMEPAchALIpYr8K3BQrI6IDCGtt6TSh3+VgWVEgAAAAAAAAAAkLOO/H76EwU7Rk6f/kRhRpFx5p1Epm+4Vz0yFD+RWeadRxYd36p7W6X/najSMLrcRnaZdx85dHin7mmZnv3VO/sX2aSyOzxHLpn3Grl1eGeo/TV71+5Nf6/pa/+qVpr+St/APvev3VXp3dX62j8AAAAAAAAAAAAAAACAb3cHvkhXCQ==
+   eJzt1DkKAgEMBdA5tMtlXE6ilctJxmpGr2BAbCSFMEUIvAef335SZBgAAAAAAAAAAIDMKXKuHtHYGHlUj2hmFVknvYlsC3d1sYvskz5EjoW7urhErknfIvfCXV1MkTnpZ+RVuKuL77/7vZv7/cf/W8b/W8b/AwAAAAAAAAAAAAAAAPh4AxLAMls=
   </data>
  </layer>
  <layer id="1" name="Earth" width="80" height="80">
@@ -43,9 +43,6 @@
    eJzt0rENgDAAA7CovQH+gW/K73AD3Tp3AoS9ZI2iJAAAAAD/sNVkryOZ0/pmRx3JvLMkV3m6xXct/Xer7wEAAAAAAAAAAAAAAAAAAAAAAADwQjdvgQTV
   </data>
  </layer>
- <objectgroup id="15" name="house_shop">
-  <object id="23" gid="1050" x="1466" y="1206" width="252" height="247"/>
- </objectgroup>
  <layer id="19" name="door to the store" width="80" height="80">
   <data encoding="base64" compression="zlib">
    eJztwzENAAAIA7B5w78nnmngIG3SBAAAAAAAAAAAAACAK9MAAAAAAAAAAAAAAAAA/LHIAACH
