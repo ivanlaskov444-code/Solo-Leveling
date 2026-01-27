@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="24">
  <tileset firstgid="1" source="city.tsx"/>
+ <tileset firstgid="1041" source="goblin.tsx"/>
+ <tileset firstgid="1050" source="Exterior_house.tsx"/>
  <layer id="7" name="house border" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJzt1DkKAgEMBdA5tMtlXE6ilctJxmpGr2BAbCSFMEUIvAef335SZBgAAAAAAAAAAIDMKXKuHtHYGHlUj2hmFVknvYlsC3d1sYvskz5EjoW7urhErknfIvfCXV1MkTnpZ+RVuKuL77/7vZv7/cf/W8b/W8b/AwAAAAAAAAAAAAAAAPh4AxLAMls=
+   eJzt1DmOwkAUBNA+NMtlBjgIMEPAchALIpYr8K3BQrI6IDCGtt6TSh3+VgWVEgAAAAAAAAAAkLOO/H76EwU7Rk6f/kRhRpFx5p1Epm+4Vz0yFD+RWeadRxYd36p7W6X/najSMLrcRnaZdx85dHin7mmZnv3VO/sX2aSyOzxHLpn3Grl1eGeo/TV71+5Nf6/pa/+qVpr+St/APvev3VXp3dX62j8AAAAAAAAAAAAAAACAb3cHvkhXCQ==
   </data>
  </layer>
  <layer id="1" name="Earth" width="80" height="80">
@@ -13,7 +15,7 @@
  </layer>
  <layer id="3" name="border" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJzt2zluw0AMQNGxlMt4aXOGpM3S5gxJm6XNPbIdNGymsit/QTQH/wFqVJiDDwhuOK1JkiRJkiTpEl1vxnoy+m3n1nbzsr+7mVqbpuP3c7y7OvGe6OfP6ncXs+8X7reNRrsTnfbx7rBwv37+rH6vMftt4X5r6ufP6vcds38K9+vnz+pX3T7aHRL79flVPcTZHxP79flVvcfZPxL79flV/cbZ/xL79fnV+f/B2I+xH2M/xn6M/Rj7MfZj7MfYj7EfYz/GfsyT/ZBP+yF+v8zz3L5u4llz5kj9XqLdrf3O5vfL2I+xH2M/xn6M/Rj7MfZj7MfYj7EfYz/Gfoz9GPefz5O9P159/zl7f7z6/nP2/nj1/efs/fFRjHT/ck0j3r9ck/cvGe9fMtn3L0d6JEmSJEmSdJn+Aa+0SjM=
+   eJzt2zkOwjAQRmGTcBmWljNAy9JyBmhZWu7BdlCmsYSEJST+KMNY75PSTIGdJ0U0dkoAAAAAAAD4R7NBXY9Hv1Gb0rjt9ncHTUpN8zlvbTYszJc2WxXma5ttCvN3ef9e/Za29qrjfiN753HhvSc2mxbmB5sdC/OTzc5f+uX9e/U72NrHjvv1Ke/fq9/N1r4H7pf379Uvuom1mzr2y+tHtba9bxz75fWjOtnez4798vpRPWzvT8d+ef3o+P/Q0E9DPw39NPTT0E9DPw39NPTT0E9DPw39NPTTbOknudBPwver2bXpOrenzzVr6re3dgv6/YzvV0M/Df009NPQT0M/Df009NPQT0M/Df009NPQT0M/Deeff+N9fjz6+Wfv8+PRzz97nx+Pfv7Z+/x4LWq6f9mnGu9f9on7lxruX2q871/W9AAAAAAAAOA/vQAET013
   </data>
  </layer>
  <layer id="4" name="Слой тайлов 3" width="80" height="80">
@@ -23,17 +25,30 @@
  </layer>
  <layer id="5" name="Слой тайлов 4" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJzt0jEOQFAAA9DysXFZ52XjHIjJyPIH7yXdm6YJAAAAAAAAAAAAwG1unuGda7OtTfbWfl+NJZlK7Rb81XJ+b/W/z/ouGbraLQAAAAAAAAAAAAAAAADqOAA1PAZ9
+   eJzt0jEKwlAQBNBxE+30sqK30ZuZTs9hrILlj+Av8h4s2w7DJAAAAADbcKnkWsunzW3u7F7Lp439/cb+AAAAAOB/zrvvo82ns2clr9LfWschOQ29U7BVj3l7k/2tth+Tw9g7BQAAAAAAAAAAAAAAAEAfb2taDzU=
   </data>
  </layer>
  <layer id="6" name="Слой тайлов 5" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJzt17ttAkEARdFhcwxdWCK3oRgWXAwsboZPU3y6gEduGU0EK86R7gYbjV40UwoAAAAAUGs+KKVNi7QcPPs0/bPKZuvUpY39AAAAeFHHvFlP6Zwu3q/Vhk0pH2mUxs2zT9M/X9nsO03TzH7V2my2SMv0Y79q62zWpU36tV+1bTbbpX062A964Xr//HXfy7/GPfChz382mtgPAAAAAAAAAAAAAAAAeCM3VjcQFA==
+   eJzt10tOwlAAheFLw1QBI2swcQ66GB4uRh6bEdgUyC7k4NhIO+ERvi/5O2jSpDmje0sBAAAAgHp67VKe2pf+i+swapUyTpM0bdX75jnb9e336zObzdI8LWruBwAAAOe2zZ11l77T3v21sYeqlMfUSd3q0n9zewbZbJje0rv9Ghtns0mapg/7NTbLZvO0SEv7NfaVzVZpnTb2g5vwc3z8dd7Lu8o58KSXfzZ6tR8AAAAAAAAAAAAAAABwRw52jhBw
   </data>
  </layer>
  <layer id="8" name="dungeon" width="80" height="80">
   <data encoding="base64" compression="zlib">
    eJzt0MEJg1AURNEnRvvUpBmjzQg2I5jUkmnBVfhwDtz9MFUAAAAAbZq6qjk906v795r2LPnsnda0+e+2PZ99+qpvOvx325nPhkfVmC7/AQAAAAAAAAAAAAAAAAAAAAAAANC4H8ryCK8=
+  </data>
+ </layer>
+ <layer id="11" name="dungeon2" width="80" height="80">
+  <data encoding="base64" compression="zlib">
+   eJzt0rENgDAAA7CovQH+gW/K73AD3Tp3AoS9ZI2iJAAAAAD/sNVkryOZ0/pmRx3JvLMkV3m6xXct/Xer7wEAAAAAAAAAAAAAAAAAAAAAAADwQjdvgQTV
+  </data>
+ </layer>
+ <objectgroup id="15" name="house_shop">
+  <object id="23" gid="1050" x="1466" y="1206" width="252" height="247"/>
+ </objectgroup>
+ <layer id="19" name="door to the store" width="80" height="80">
+  <data encoding="base64" compression="zlib">
+   eJztwzENAAAIA7B5w78nnmngIG3SBAAAAAAAAAAAAACAK9MAAAAAAAAAAAAAAAAA/LHIAACH
   </data>
  </layer>
 </map>
