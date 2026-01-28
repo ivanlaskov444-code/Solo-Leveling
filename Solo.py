@@ -3,29 +3,10 @@ import random
 import time
 from database import Database
 from pyglet.graphics import Batch
+import constants as const
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Solo Leveling"
-
-goblin_speed = 2
-RADIUS = 300
-
-TILE_SCALING = 1.0
-CAMERA_LERP = 0.12
-
-player_damage = 2
-player_speed = 10
-
-goblin_damage = 0.3
-goblin_hp = 80
-monster_sword_strike = arcade.load_sound("monster_sword_strike.mp3")
-air_sword_strike = arcade.load_sound("air_sword_strike.mp3")
-
-mucus_hp = 50
-mucus_damage = 0.2
-aggro_radius_mucus = 300
-mucus_speed = 2
+monster_sword_strike = arcade.load_sound(const.SOUND_MONSTER_SWORD)
+air_sword_strike = arcade.load_sound(const.SOUND_AIR_SWORD)
 
 
 # Функция рисования HP-баров
@@ -360,10 +341,10 @@ class Player(arcade.AnimatedWalkingSprite):
 
         self.center_x = x
         self.center_y = y
-        self.max_hp = 100
-        self.hp = 100
-        self.damage = player_damage
-        self.speed = player_speed
+        self.max_hp = const.PLAYER_MAX_HP
+        self.hp = const.PLAYER_HP
+        self.damage = const.PLAYER_DAMAGE
+        self.speed = const.PLAYER_SPEED
 
         self.is_attacking = False
         self.attack_cooldown = 0.0 # Перезарядка
@@ -422,13 +403,13 @@ class Player(arcade.AnimatedWalkingSprite):
 
     def on_key_press(self, key):
         if key in (arcade.key.W, arcade.key.UP):
-            self.change_y = player_speed
+            self.change_y = const.PLAYER_SPEED
         elif key in (arcade.key.S, arcade.key.DOWN):
-            self.change_y = -player_speed
+            self.change_y = -const.PLAYER_SPEED
         elif key in (arcade.key.A, arcade.key.LEFT):
-            self.change_x = -player_speed
+            self.change_x = -const.PLAYER_SPEED
         elif key in (arcade.key.D, arcade.key.RIGHT):
-            self.change_x = player_speed
+            self.change_x = const.PLAYER_SPEED
         elif key == arcade.key.ENTER:
             self.attack()
 
@@ -489,12 +470,12 @@ class Goblin(arcade.AnimatedWalkingSprite):
         self.center_x = x
         self.center_y = y
 
-        self.damage = goblin_damage
-        self.max_hp = 100
-        self.hp = 100
-        self.speed = goblin_speed
-        self.aggro_radius = RADIUS
-        self.attack_radius = 35
+        self.damage = const.GOBLIN_DAMAGE
+        self.hp = const.GOBLIN_HP
+        self.max_hp = const.GOBLIN_MAX_HP
+        self.speed = const.GOBLIN_SPEED
+        self.aggro_radius = const.RADIUS
+        self.attack_radius = const.GOBLIN_ATTACK_RADIUS
 
     def goblin_logic(self, player, dt):
         distance = arcade.get_distance_between_sprites(self, player)
@@ -549,13 +530,13 @@ class Mucus(arcade.AnimatedWalkingSprite):
         self.center_x = x
         self.center_y = y
 
-        self.max_hp = 50
-        self.hp = mucus_hp
+        self.max_hp = const.MUCUS_MAX_HP
+        self.hp = const.MUCUS_HP
+        self.speed = const.MUCUS_SPEED
+        self.damage = const.MUCUS_DAMAGE
+        self.aggro_radius = const.AGGRO_RADIUS_MUCUS
+        self.attack_radius = const.MUCUS_ATTACK_RADIUS
 
-        self.speed = 1.2
-        self.damage = mucus_damage
-        self.aggro_radius = RADIUS
-        self.attack_radius = 45
     def mucus_logic(self, player, dt):
         distance = arcade.get_distance_between_sprites(self, player)
 
@@ -616,7 +597,7 @@ class City(arcade.View):
         self.gui_camera = arcade.camera.Camera2D()
 
     def setup(self):
-        self.tile_map = arcade.load_tilemap("map_city.tmx", scaling=TILE_SCALING)
+        self.tile_map = arcade.load_tilemap("map_city.tmx", scaling=const.TILE_SCALING)
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
         self.scene.add_sprite("Player", self.player)
@@ -657,7 +638,7 @@ class City(arcade.View):
         self.world_camera.position = arcade.math.lerp_2d(
             self.world_camera.position,
             (self.player.center_x, self.player.center_y),
-            CAMERA_LERP
+            const.CAMERA_LERP
         )
 
         # переход в подземелье
@@ -714,7 +695,7 @@ class Dungeon(arcade.View):
 
 
     def setup(self):
-        self.tile_map = arcade.load_tilemap("map_dungeon.tmx", scaling=TILE_SCALING)
+        self.tile_map = arcade.load_tilemap("map_dungeon.tmx", scaling=const.TILE_SCALING)
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
         self.scene.add_sprite("Player", self.player)
@@ -843,7 +824,7 @@ class Dungeon1(arcade.View):
         )
 
     def setup(self):
-        self.tile_map = arcade.load_tilemap("map_dungeon2.tmx", scaling=TILE_SCALING)
+        self.tile_map = arcade.load_tilemap("map_dungeon2.tmx", scaling=const.TILE_SCALING)
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
         self.scene.add_sprite("Player", self.player)
@@ -1021,14 +1002,10 @@ class VictoryScreen(arcade.View):
             self.window.show_view(self.parent_view)
 
 
-
-
 def main():
-    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-
+    window = arcade.Window(const.SCREEN_WIDTH, const.SCREEN_HEIGHT, const.SCREEN_TITLE)
     menu = MainMenu()
     window.show_view(menu)
-
     arcade.run()
 
 
