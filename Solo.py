@@ -1,4 +1,6 @@
 import arcade
+import random
+import time
 from database import Database
 from pyglet.graphics import Batch
 
@@ -44,6 +46,30 @@ def draw_hp_bar(sprite, width=40, height=6):
     )
 
 
+class Particle:
+    def __init__(self, x, y, color):
+        self.x = x
+        self.y = y
+        self.vx = random.uniform(-4, 4)
+        self.vy = random.uniform(3, 7)
+        self.life = random.uniform(0.7, 1.2)
+        self.max_life = self.life
+        self.radius = random.randint(2, 5)
+        self.color = color
+
+    def update(self, dt):
+        self.x += self.vx
+        self.y += self.vy
+        self.vy -= 0.4
+        self.vx *= 0.98
+        self.life -= dt
+        return self.life > 0
+
+    def draw(self):
+        alpha = int(255 * (self.life / self.max_life))
+        color_with_alpha = (self.color[0], self.color[1], self.color[2], alpha)
+        arcade.draw_circle_filled(self.x, self.y, self.radius, color_with_alpha)
+
 class MainMenu(arcade.View):
     def __init__(self):
         super().__init__()
@@ -82,6 +108,7 @@ class RegisterView(arcade.View):
         self.error = False
         self.active_field = "login"
         self.player = None
+        self.back_button = arcade.LRBT(10, 100, 565, 595)
 
     def on_draw(self):
         self.clear()
@@ -92,6 +119,8 @@ class RegisterView(arcade.View):
 
         arcade.draw_text("Пароль:", 250, 380, arcade.color.WHITE)
         arcade.draw_text(self.password_text, 350, 380, arcade.color.YELLOW)
+
+        arcade.draw_text("Назад", 10, 580, arcade.color.WHITE)
 
         if self.error:
             arcade.draw_text("Логин уже занят", 250, 200, arcade.color.WHITE)
@@ -132,6 +161,15 @@ class RegisterView(arcade.View):
                 else:
                     self.password_text += char
 
+    def on_mouse_press(self, x, y, button, modifiers):
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            # Проверяем, попал ли клик в область текста
+            if (self.back_button.left <= x <= self.back_button.right and
+                self.back_button.bottom <= y <= self.back_button.top):
+                main_menu = MainMenu()
+                self.window.show_view(main_menu)
+
+
 
 class LoginView(arcade.View):
     def __init__(self):
@@ -142,6 +180,7 @@ class LoginView(arcade.View):
         self.error = False
         self.active_field = "login"
         self.player = None
+        self.back_button = arcade.LRBT(10, 100, 565, 595)
 
     def on_draw(self):
         self.clear()
@@ -152,6 +191,8 @@ class LoginView(arcade.View):
 
         arcade.draw_text("Пароль:", 250, 380, arcade.color.WHITE)
         arcade.draw_text(self.password_text, 350, 380, arcade.color.YELLOW)
+
+        arcade.draw_text("Назад", 10, 580, arcade.color.WHITE)
 
         if self.error:
             arcade.draw_text("Неправильный логин или пароль", 250, 200, arcade.color.WHITE)
@@ -187,6 +228,14 @@ class LoginView(arcade.View):
                 else:
                     self.password_text += char
 
+    def on_mouse_press(self, x, y, button, modifiers):
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            # Проверяем, попал ли клик в область текста
+            if (self.back_button.left <= x <= self.back_button.right and
+                self.back_button.bottom <= y <= self.back_button.top):
+                main_menu = MainMenu()
+                self.window.show_view(main_menu)
+
 
 class StartWindow(arcade.View):
     def __init__(self, player=None, db=None):
@@ -201,6 +250,10 @@ class StartWindow(arcade.View):
         arcade.draw_text("START GAME", self.center_x, self.center_y + 75, arcade.color.BLACK, font_size=24,
                          anchor_x="center", anchor_y="center")
 
+        arcade.draw_lbwh_rectangle_filled(self.center_x - 120, self.center_y - 40, 240, 50, arcade.color.WHITE)
+        arcade.draw_text("Сменить аккаунт", self.center_x, self.center_y - 10, arcade.color.BLACK, font_size=24,
+                         anchor_x="center", anchor_y="center")
+
         if self.player and self.player.login:
             arcade.draw_text(f"Игрок: {self.player.login}", 50, 550, arcade.color.WHITE, 16)
             arcade.draw_text(f"Кредиты: {self.player.credits}", 50, 520, arcade.color.WHITE, 16)
@@ -209,11 +262,20 @@ class StartWindow(arcade.View):
     def on_mouse_press(self, x, y, button, modifiers):
         if button == arcade.MOUSE_BUTTON_LEFT:
             if (self.center_x - 100 <= x <= self.center_x + 100 and
-                    self.center_y + 50 <= y <= self.center_y + 100):
+                    self.center_y + 40 <= y <= self.center_y + 80):
 
                 city = City(self.player, spawn_x=700, spawn_y=1470)
                 city.setup()
                 self.window.show_view(city)
+
+
+            elif button == arcade.MOUSE_BUTTON_LEFT:
+                if (self.center_x - 120 <= x <= self.center_x + 120 and
+                        self.center_y - 40 <= y <= self.center_y + 10):
+                    main_menu = MainMenu()
+                    self.window.show_view(main_menu)
+
+
 
 class Player(arcade.AnimatedWalkingSprite):
     def __init__(self, x, y):
@@ -383,6 +445,7 @@ class Goblin(arcade.AnimatedWalkingSprite):
         super().__init__(scale=2.0)
         self.db = Database()
 
+
         base = "goblin_run/"
 
         # вниз
@@ -420,6 +483,8 @@ class Goblin(arcade.AnimatedWalkingSprite):
             arcade.load_texture(base + "goblin_left_right.png"),
             arcade.load_texture(base + "goblin_right_right.png"),
         ]
+        self.blood_particles = []
+        self.blood_color = arcade.color.RED
 
         self.center_x = x
         self.center_y = y
@@ -457,16 +522,28 @@ class Goblin(arcade.AnimatedWalkingSprite):
             if not player.hit_registered:
                 monster_sword_strike.play()
                 player.hit_registered = True
+                # делаем кровь
+                for _ in range(8):
+                    particle = Particle(self.center_x, self.center_y, self.blood_color)
+                    self.blood_particles.append(particle)
+
+            # обновляем частицы
+        self.blood_particles = [p for p in self.blood_particles if p.update(dt)]
         if self.hp <= 0:
             self.kill()
             self.db.add_credits_goblin(player.login)
+
+    def draw_blood(self):
+        for particle in self.blood_particles:
+            particle.draw()
 
 
 class Mucus(arcade.AnimatedWalkingSprite):
     def __init__(self, x, y):
         super().__init__(scale=0.5)
         self.db = Database()
-
+        self.blood_particles = []
+        self.mucus_color = (0, 150, 255)
         self.texture = arcade.load_texture(":resources:images/enemies/slimeBlue.png")
 
         self.center_x = x
@@ -500,15 +577,28 @@ class Mucus(arcade.AnimatedWalkingSprite):
         if arcade.check_for_collision(player, self) and distance < self.attack_radius:
             player.hp -= self.damage
 
+
         # урон слизню
         if player.is_attacking and distance < 60:
             self.hp -= player.damage
             if not player.hit_registered:
                 monster_sword_strike.play()
                 player.hit_registered = True
+                # делаем кровь
+                for _ in range(5):
+                    particle = Particle(self.center_x, self.center_y,self.mucus_color)
+                    self.blood_particles.append(particle)
+
+            # обновляем частицы
+        self.blood_particles = [p for p in self.blood_particles if p.update(dt)]
+
         if self.hp <= 0:
             self.kill()
             self.db.add_credits_mucus(player.login)
+
+    def draw_blood(self):
+        for particle in self.blood_particles:
+            particle.draw()
 
 
 # Класс города
@@ -522,6 +612,7 @@ class City(arcade.View):
         self.player.center_y = spawn_y
 
         self.world_camera = arcade.camera.Camera2D()
+
         self.gui_camera = arcade.camera.Camera2D()
 
     def setup(self):
@@ -546,6 +637,10 @@ class City(arcade.View):
         self.world_camera.use()
         self.scene.draw()
         draw_hp_bar(self.player)  # хп игрока
+        self.gui_camera.use()
+        arcade.draw_lbwh_rectangle_filled(0, 570, 60, 80, arcade.color.WHITE)
+        arcade.draw_text("Выход", 0, 580, arcade.color.BLACK, font_size=15)
+
 
 
     def on_update(self, dt):
@@ -589,13 +684,24 @@ class City(arcade.View):
     def on_key_release(self, key, modifiers):
         self.player.on_key_release(key)
 
+    def on_mouse_press(self, x, y, button, modifiers):
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            button_left = 0
+            button_right = 60
+            button_bottom = 570
+            button_top = 650
 
+            if (button_left <= x <= button_right and button_bottom <= y <= button_top):
+                start_window = StartWindow(self.player, self.db)
+                self.window.show_view(start_window)
 
 #Подземелье со слизнями
 class Dungeon(arcade.View):
     def __init__(self, player, spawn_x, spawn_y):
         super().__init__()
         arcade.set_background_color(arcade.color.SKY_BLUE)
+        self.db = Database()
+        self.total_kills = 0
 
         self.player = player
         self.player.center_x = spawn_x
@@ -641,8 +747,9 @@ class Dungeon(arcade.View):
         self.mucus_list.draw()
 
         # хп слизня
-        for monster in self.mucus_list:
-            draw_hp_bar(monster)
+        for mucus in self.mucus_list:
+            draw_hp_bar(mucus)
+            mucus.draw_blood()
 
         # хп игрока
         draw_hp_bar(self.player)
@@ -685,8 +792,25 @@ class Dungeon(arcade.View):
 
         mucus_count_after = len(self.mucus_list)
         if mucus_count_after < mucus_count_before:
-            self.killing += (mucus_count_before - mucus_count_after)
+            kills = mucus_count_before - mucus_count_after
+            self.killing += kills
+            self.total_kills += 1
             self.killing_info.text = f"killing: {self.killing}"
+            if self.total_kills == 25:
+                self.db.up_level(self.player.login)
+                victory_screen = VictoryScreen(self.player.login, self.db, self)
+                self.window.show_view(victory_screen)
+
+
+
+
+        if self.player.hp <= 0:
+            if "Player" in self.scene:
+                self.scene.remove_sprite_list_by_name("Player")
+            self.physics_engine = None
+            death_screen = DeathScreen(self.player.login, self.db)
+            self.window.show_view(death_screen)
+
 
 
     def on_key_press(self, key, modifiers):
@@ -700,6 +824,9 @@ class Dungeon1(arcade.View):
     def __init__(self, player, spawn_x, spawn_y):
         super().__init__()
         arcade.set_background_color(arcade.color.SKY_BLUE)
+        self.total_kills = 0
+
+        self.db = Database()
 
         self.player = player
         self.player.center_x = spawn_x
@@ -743,6 +870,7 @@ class Dungeon1(arcade.View):
 
         for goblin in self.goblin_list:
             draw_hp_bar(goblin)
+            goblin.draw_blood()
 
         draw_hp_bar(self.player)
 
@@ -783,9 +911,21 @@ class Dungeon1(arcade.View):
 
         goblin_count_after = len(self.goblin_list)
         if goblin_count_after < goblin_count_before:
-            self.killing += (goblin_count_before - goblin_count_after)
+            kills = goblin_count_before - goblin_count_after
+            self.killing += kills
+            self.total_kills += 1
             self.killing_info.text = f"killing: {self.killing}"
+            if self.total_kills == 25:
+                self.db.up_level(self.player.login)
+                victory_screen = VictoryScreen(self.player.login, self.db, self)
+                self.window.show_view(victory_screen)
 
+        if self.player.hp <= 0:
+            if "Player" in self.scene:
+                self.scene.remove_sprite_list_by_name("Player")
+            self.physics_engine = None
+            death_screen = DeathScreen(self.player.login, self.db)
+            self.window.show_view(death_screen)
 
 
     def on_key_press(self, key, modifiers):
@@ -794,68 +934,85 @@ class Dungeon1(arcade.View):
     def on_key_release(self, key, modifiers):
         self.player.on_key_release(key)
 
-# магазин
-# class Shop(arcade.View):
-#     def __init__(self, player, spawn_x, spawn_y):
-#         super().__init__()
-#         arcade.set_background_color(arcade.color.SKY_BLUE)
-#         self.camera = arcade.camera.Camera2D()
-#
-#         self.player = player
-#         self.player.center_x = spawn_x
-#         self.player.center_y = spawn_y
-#
-#
-#     def setup(self):
-#         self.tile_map = arcade.load_tilemap("Interior.tmx", scaling=TILE_SCALING)
-#         self.scene = arcade.Scene.from_tilemap(self.tile_map)
-#
-#         self.scene.add_sprite("Player", self.player)
-#
-#         self.portal_list = self.tile_map.sprite_lists["portal"]
-#
-#         walls = arcade.SpriteList()
-#         walls.extend(self.scene.get_sprite_list("border"))
-#         self.physics_engine = arcade.PhysicsEngineSimple(self.player, walls)
-#
-#         for obj in self.tile_map.object_lists.get("spawn", []):
-#             if obj.name == "player_spawn":
-#                 self.player.center_x = obj.shape[0]
-#                 self.player.center_y = obj.shape[1]
-#
-#     def on_draw(self):
-#         self.clear()
-#
-#         self.camera.use()
-#         self.scene.draw()
-#
-#         draw_hp_bar(self.player)
-#
-#     def on_update(self, dt):
-#         self.physics_engine.update()
-#         if self.player.change_x > 0:
-#             self.player.facing_direction = arcade.FACE_RIGHT
-#         elif self.player.change_x < 0:
-#             self.player.facing_direction = arcade.FACE_LEFT
-#         elif self.player.change_y > 0:
-#             self.player.facing_direction = arcade.FACE_UP
-#         elif self.player.change_y < 0:
-#             self.player.facing_direction = arcade.FACE_DOWN
-#         self.player.update_animation(dt)
-#
-#         # возврат в город
-#         if arcade.check_for_collision_with_list(self.player, self.portal_list):
-#             city = City(self.player, spawn_x=1600, spawn_y=2000)
-#             city.setup()
-#             self.window.show_view(city)
-#             return
-#
-#
-#     def on_key_press(self, key, modifiers):
-#         self.player.on_key_press(key)
-#
-#     def on_key_release(self, key, modifiers):
-#         self.player.on_key_release(key)
+
+class DeathScreen(arcade.View):
+    def __init__(self, player_login, db):
+        super().__init__()
+        self.player_login = player_login
+        self.db = db
+
+    def on_draw(self):
+        self.clear()
+        arcade.set_background_color(arcade.color.BLACK)
+
+        arcade.draw_text("ВЫ УМЕРЛИ",
+                         self.center_x, self.center_y + 100,
+                         arcade.color.RED, 50,
+                         anchor_x="center", anchor_y="center")
+
+        if self.player_login:
+            arcade.draw_text(f"Игрок: {self.player_login}",
+                             self.center_x, self.center_y,
+                             arcade.color.WHITE, 30,
+                             anchor_x="center", anchor_y="center")
+
+        arcade.draw_text("Нажмите ESC для выхода в главное меню",
+                         self.center_x, self.center_y - 100,
+                         arcade.color.WHITE, 20,
+                         anchor_x="center", anchor_y="center")
+
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.ESCAPE:
+            if self.player_login:
+                player_data = self.db.restart(self.player_login)
+                if player_data:
+                    player = Player(700, 1470)
+                    player.login = self.player_login
+                    player.credits = player_data[2]
+                    player.level = player_data[3]
+                    start_window = StartWindow(player, self.db)
+
+                    self.window.show_view(start_window)
+
+
+class VictoryScreen(arcade.View):
+
+    def __init__(self, player_login, db, parent_view):
+        super().__init__()
+        self.player_login = player_login
+        self.db = db
+        self.parent_view = parent_view
+        self.start_time = time.time()
+
+    def on_draw(self):
+        self.parent_view.on_draw()
+
+
+        arcade.draw_lbwh_rectangle_filled(
+            0, 0,
+            self.window.width,
+            self.window.height,
+            (0, 0, 0, 160)
+        )
+
+        arcade.draw_text(
+            "Вы убили всех монстров!",
+            self.window.width // 2,
+            self.window.height // 2,
+            arcade.color.GOLD,
+            30,
+            bold=True,
+            anchor_x="center",
+            anchor_y="center"
+        )
+
+
+    def on_update(self, dt):
+        elapsed = time.time() - self.start_time
+        if elapsed >= 3:
+            self.window.show_view(self.parent_view)
+
+
 
 
 def main():
