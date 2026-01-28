@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="24">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="26">
  <tileset firstgid="1" source="city.tsx"/>
  <tileset firstgid="1041" source="goblin.tsx"/>
  <tileset firstgid="1050" source="Exterior_house.tsx"/>
+ <tileset firstgid="1051" source="exterior.tsx"/>
  <layer id="7" name="house border" width="80" height="80">
   <data encoding="base64" compression="zlib">
    eJzt1DkKAgEMBdA5tMtlXE6ilctJxmpGr2BAbCSFMEUIvAef335SZBgAAAAAAAAAAIDMKXKuHtHYGHlUj2hmFVknvYlsC3d1sYvskz5EjoW7urhErknfIvfCXV1MkTnpZ+RVuKuL77/7vZv7/cf/W8b/W8b/AwAAAAAAAAAAAAAAAPh4AxLAMls=
@@ -40,12 +41,7 @@
  </layer>
  <layer id="11" name="dungeon2" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJzt0rENgDAAA7CovQH+gW/K73AD3Tp3AoS9ZI2iJAAAAAD/sNVkryOZ0/pmRx3JvLMkV3m6xXct/Xer7wEAAAAAAAAAAAAAAAAAAAAAAADwQjdvgQTV
-  </data>
- </layer>
- <layer id="19" name="door to the store" width="80" height="80">
-  <data encoding="base64" compression="zlib">
-   eJztwzENAAAIA7B5w78nnmngIG3SBAAAAAAAAAAAAACAK9MAAAAAAAAAAAAAAAAA/LHIAACH
+   eJzt0rENgDAQA8BXnhWgZRbYBnaHGUgXiS5VhLhr3FqWIwAAAAD+YcuIPVvS56ibndmSfleJuMvoFt81198tvgcAAAAAEOs0ugEAAAAAAAAAAAAAAAAAAG8PXoEE+A==
   </data>
  </layer>
 </map>

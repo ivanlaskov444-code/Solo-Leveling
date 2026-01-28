@@ -262,7 +262,7 @@ class StartWindow(arcade.View):
     def on_mouse_press(self, x, y, button, modifiers):
         if button == arcade.MOUSE_BUTTON_LEFT:
             if (self.center_x - 100 <= x <= self.center_x + 100 and
-                    self.center_y + 40 <= y <= self.center_y + 80):
+                    self.center_y + 50 <= y <= self.center_y + 100):
 
                 city = City(self.player, spawn_x=700, spawn_y=1470)
                 city.setup()
@@ -624,7 +624,6 @@ class City(arcade.View):
         # Порталы
         self.portal_list = self.tile_map.sprite_lists["dungeon"]
         self.portal_list2 = self.tile_map.sprite_lists["dungeon2"]
-        self.portal_shop = self.tile_map.sprite_lists["door to the store"]
 
         walls = arcade.SpriteList()
         walls.extend(self.scene.get_sprite_list("border"))
@@ -671,12 +670,6 @@ class City(arcade.View):
             dungeon1 = Dungeon1(self.player, spawn_x=590, spawn_y=500)
             dungeon1.setup()
             self.window.show_view(dungeon1)
-
-        # elif arcade.check_for_collision_with_list(self.player, self.portal_shop):
-        #     shop = Shop(self.player, spawn_x=self.player.center_x, spawn_y=self.player.center_y)
-        #     shop.setup()
-        #     self.window.show_view(shop)
-
 
     def on_key_press(self, key, modifiers):
         self.player.on_key_press(key)
@@ -739,12 +732,19 @@ class Dungeon(arcade.View):
             mucus = Mucus(obj.shape[0], obj.shape[1])
             self.mucus_list.append(mucus)
 
+        #self.restores_health = arcade.SpriteList()
+
+        #for obj in self.tile_map.object_lists.get("health", []):
+            #goblin = Goblin(obj.shape[0], obj.shape[1])
+            #self.restores_health.append(goblin)
+
     def on_draw(self):
         self.clear()
         self.world_camera.use()
 
         self.scene.draw()
         self.mucus_list.draw()
+        #self.restores_health.draw()
 
         # хп слизня
         for mucus in self.mucus_list:
@@ -808,7 +808,7 @@ class Dungeon(arcade.View):
             if "Player" in self.scene:
                 self.scene.remove_sprite_list_by_name("Player")
             self.physics_engine = None
-            death_screen = DeathScreen(self.player.login, self.db)
+            death_screen = DeathScreen(self.player.login, self.db, total_kills=self.killing)
             self.window.show_view(death_screen)
 
 
@@ -924,7 +924,7 @@ class Dungeon1(arcade.View):
             if "Player" in self.scene:
                 self.scene.remove_sprite_list_by_name("Player")
             self.physics_engine = None
-            death_screen = DeathScreen(self.player.login, self.db)
+            death_screen = DeathScreen(self.player.login, self.db, total_kills=self.killing)
             self.window.show_view(death_screen)
 
 
@@ -936,28 +936,36 @@ class Dungeon1(arcade.View):
 
 
 class DeathScreen(arcade.View):
-    def __init__(self, player_login, db):
+    def __init__(self, player_login, db, total_kills=0):
         super().__init__()
         self.player_login = player_login
         self.db = db
+        self.total_kills = total_kills
 
     def on_draw(self):
         self.clear()
         arcade.set_background_color(arcade.color.BLACK)
 
         arcade.draw_text("ВЫ УМЕРЛИ",
-                         self.center_x, self.center_y + 100,
+                         self.center_x, self.center_y + 150,
                          arcade.color.RED, 50,
                          anchor_x="center", anchor_y="center")
 
         if self.player_login:
+            # Информация об игроке
             arcade.draw_text(f"Игрок: {self.player_login}",
-                             self.center_x, self.center_y,
+                             self.center_x, self.center_y + 50,
                              arcade.color.WHITE, 30,
                              anchor_x="center", anchor_y="center")
 
+            # Количество убийств
+            arcade.draw_text(f"Убито врагов: {self.total_kills}",
+                             self.center_x, self.center_y,
+                             arcade.color.WHITE, 28,
+                             anchor_x="center", anchor_y="center")
+
         arcade.draw_text("Нажмите ESC для выхода в главное меню",
-                         self.center_x, self.center_y - 100,
+                         self.center_x, self.center_y - 120,
                          arcade.color.WHITE, 20,
                          anchor_x="center", anchor_y="center")
 
