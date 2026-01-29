@@ -211,7 +211,6 @@ class LoginView(arcade.View):
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == arcade.MOUSE_BUTTON_LEFT:
-            # Проверяем, попал ли клик в область текста
             if (self.back_button.left <= x <= self.back_button.right and
                 self.back_button.bottom <= y <= self.back_button.top):
                 main_menu = MainMenu()
@@ -365,8 +364,6 @@ class Player(arcade.AnimatedWalkingSprite):
 
         air_sword_strike.play()
         self.hit_registered = False
-
-
 
 
     def update_animation(self, delta_time: float = 1 / 60):
@@ -779,7 +776,7 @@ class Dungeon(arcade.View):
             self.killing_info.text = f"killing: {self.killing}"
             if self.total_kills == 25:
                 self.db.up_level(self.player.login)
-                victory_screen = VictoryScreen(self.player.login, self.db, self)
+                victory_screen = VictoryScreen(self.player.login, self.db, self, total_kills=self.killing)
                 self.window.show_view(victory_screen)
 
 
@@ -789,7 +786,7 @@ class Dungeon(arcade.View):
             if "Player" in self.scene:
                 self.scene.remove_sprite_list_by_name("Player")
             self.physics_engine = None
-            death_screen = DeathScreen(self.player.login, self.db, total_kills=self.killing)
+            death_screen = DeathScreen(self.player.login, self.db, self,  total_kills=self.killing)
             self.window.show_view(death_screen)
 
 
@@ -898,14 +895,14 @@ class Dungeon1(arcade.View):
             self.killing_info.text = f"killing: {self.killing}"
             if self.total_kills == 25:
                 self.db.up_level(self.player.login)
-                victory_screen = VictoryScreen(self.player.login, self.db, self)
+                victory_screen = VictoryScreen(self.player.login, self.db, self, total_kills=self.killing)
                 self.window.show_view(victory_screen)
 
         if self.player.hp <= 0:
             if "Player" in self.scene:
                 self.scene.remove_sprite_list_by_name("Player")
             self.physics_engine = None
-            death_screen = DeathScreen(self.player.login, self.db, total_kills=self.killing)
+            death_screen = DeathScreen(self.player.login, self.db, self, total_kills=self.killing)
             self.window.show_view(death_screen)
 
 
@@ -917,38 +914,50 @@ class Dungeon1(arcade.View):
 
 
 class DeathScreen(arcade.View):
-    def __init__(self, player_login, db, total_kills=0):
+    def __init__(self, player_login, db, parent_view,  total_kills=0):
         super().__init__()
         self.player_login = player_login
         self.db = db
         self.total_kills = total_kills
+        self.parent_view = parent_view
+        self.start_time = time.time()
 
     def on_draw(self):
-        self.clear()
-        arcade.set_background_color(arcade.color.BLACK)
+        self.parent_view.on_draw()
+
+        arcade.draw_lbwh_rectangle_filled(
+            0, 0,
+            self.window.width,
+            self.window.height,
+            (0, 0, 0, 160)
+        )
+
 
         arcade.draw_text("ВЫ УМЕРЛИ",
                          self.center_x, self.center_y + 150,
                          arcade.color.RED, 50,
-                         anchor_x="center", anchor_y="center")
+                         bold=True, anchor_x="center", anchor_y="center", )
 
         if self.player_login:
-            # Информация об игроке
             arcade.draw_text(f"Игрок: {self.player_login}",
                              self.center_x, self.center_y + 50,
                              arcade.color.WHITE, 30,
-                             anchor_x="center", anchor_y="center")
+                             bold=True, anchor_x="center", anchor_y="center")
 
-            # Количество убийств
             arcade.draw_text(f"Убито врагов: {self.total_kills}",
                              self.center_x, self.center_y,
                              arcade.color.WHITE, 28,
-                             anchor_x="center", anchor_y="center")
+                             bold=True, anchor_x="center", anchor_y="center")
 
         arcade.draw_text("Нажмите ESC для выхода в главное меню",
                          self.center_x, self.center_y - 120,
                          arcade.color.WHITE, 20,
-                         anchor_x="center", anchor_y="center")
+                         bold=True, anchor_x="center", anchor_y="center")
+
+    def on_update(self, dt):
+        elapsed = time.time() - self.start_time
+        if elapsed >= 1000000000000000000000000000000000000:
+            self.window.show_view(self.parent_view)
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
@@ -966,12 +975,14 @@ class DeathScreen(arcade.View):
 
 class VictoryScreen(arcade.View):
 
-    def __init__(self, player_login, db, parent_view):
+    def __init__(self, player_login, db, parent_view, total_kills):
         super().__init__()
         self.player_login = player_login
         self.db = db
         self.parent_view = parent_view
         self.start_time = time.time()
+        self.total_kills = total_kills
+
 
     def on_draw(self):
         self.parent_view.on_draw()
@@ -994,6 +1005,17 @@ class VictoryScreen(arcade.View):
             anchor_x="center",
             anchor_y="center"
         )
+
+        if self.player_login:
+            arcade.draw_text(f"Игрок: {self.player_login}",
+                             self.center_x, self.center_y - 50,
+                             arcade.color.WHITE, 30,
+                             bold=True, anchor_x="center", anchor_y="center")
+
+            arcade.draw_text(f"Убито врагов: {self.total_kills}",
+                             self.center_x, self.center_y - 100,
+                             arcade.color.WHITE, 28,
+                             bold=True, anchor_x="center", anchor_y="center")
 
 
     def on_update(self, dt):

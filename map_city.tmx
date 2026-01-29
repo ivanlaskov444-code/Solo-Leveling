@@ -41,7 +41,7 @@
  </layer>
  <layer id="11" name="dungeon2" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJzt0rENgDAQA8BXnhWgZRbYBnaHGUgXiS5VhLhr3FqWIwAAAAD+YcuIPVvS56ibndmSfleJuMvoFt81198tvgcAAAAAEOs0ugEAAAAAAAAAAAAAAAAAAG8PXoEE+A==
+   eJzt0rENgDAAA7CovQH+gW/K73AD3Tp3AoS9ZI2iJAAAAAD/sNVkryOZ0/pmRx3JvLMkV3m6xXct/Xer7wEAAAAAAAAAAAAAAAAAAAAAAADwQjdvgQTV
   </data>
  </layer>
 </map>
