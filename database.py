@@ -1,8 +1,11 @@
 import sqlite3
+import os
 
 class Database:
     def __init__(self):
-        self.con = sqlite3.connect("database.db")
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        db_path = os.path.join(base_dir, "database.db")
+        self.con = sqlite3.connect(db_path)
         self.cur = self.con.cursor()
 
     def register_player(self, login, password):
